@@ -2,8 +2,8 @@ import Link from 'next/link';
 import * as React from 'react';
 import { css } from 'react-emotion';
 
-import * as Constants from '~/constants/theme';
 import AlgoliaSearch from '~/components/plugins/AlgoliaSearch';
+import * as Constants from '~/constants/theme';
 
 const STYLES_LOGO = css`
   display: flex;
@@ -167,7 +167,21 @@ const SECTION_LINK_TEXT = css`
   right: 0;
 `;
 
-function SectionContainer({ spaceBetween = 0, spaceAround = 0, children, style, className }) {
+type SectionContainerProps = {
+  children: JSX.Element[];
+  spaceBetween?: number;
+  spaceAround?: number;
+  style?: React.StyleHTMLAttributes<HTMLDivElement>;
+  className?: string;
+};
+
+function SectionContainer({
+  spaceBetween = 0,
+  spaceAround = 0,
+  children,
+  style,
+  className,
+}: SectionContainerProps) {
   return (
     <div
       className={className}
@@ -181,7 +195,18 @@ function SectionContainer({ spaceBetween = 0, spaceAround = 0, children, style, 
   );
 }
 
-export default class DocumentationHeader extends React.PureComponent {
+type Props = {
+  isAlgoliaSearchHidden: boolean;
+  isMenuActive: boolean;
+  isMobileSearchActive: boolean;
+  activeSection: string;
+  version: string;
+  onToggleSearch: () => void;
+  onShowMenu: () => void;
+  onHideMenu: () => void;
+};
+
+export default class DocumentationHeader extends React.PureComponent<Props> {
   render() {
     return (
       <div>
@@ -200,32 +225,32 @@ export default class DocumentationHeader extends React.PureComponent {
                 </a>
               </Link>
 
-              {this._renderSectionLinks(true)}
+              {this.renderSectionLinks(true)}
             </div>
           </div>
           <div className={STYLES_RIGHT}>
-            {!this.props.isAlogliaSearchHidden && (
+            {!this.props.isAlgoliaSearchHidden && (
               <AlgoliaSearch
                 router={this.props.router}
                 version={this.props.version}
-                hiddenOnMobile={true}
+                hiddenOnMobile
               />
             )}
 
             {!this.props.isMenuActive && (
               <div className={STYLES_MENU_BUTTON_CONTAINER}>
                 <span className={STYLES_MENU_BUTTON} onClick={this.props.onToggleSearch}>
-                  <img src={'/static/images/header/search.svg'} />
+                  <img src="/static/images/header/search.svg" />
                 </span>
                 <span className={STYLES_MENU_BUTTON} onClick={this.props.onShowMenu}>
-                  <img src={'/static/images/header/more-horizontal.svg'} />
+                  <img src="/static/images/header/more-horizontal.svg" />
                 </span>
               </div>
             )}
 
             {this.props.isMenuActive && (
               <span className={STYLES_MENU_BUTTON} onClick={this.props.onHideMenu}>
-                <img src={'/static/images/header/x.svg'} />
+                <img src="/static/images/header/x.svg" />
               </span>
             )}
           </div>
@@ -239,7 +264,7 @@ export default class DocumentationHeader extends React.PureComponent {
               onToggleSearch={this.props.onToggleSearch}
             />
           ) : (
-            this._renderSectionLinks(false)
+            this.renderSectionLinks(false)
           )}
         </header>
         <div className={`${this.props.isMobileSearchActive && STYLES_SEARCH_OVERLAY}`} />
@@ -247,7 +272,7 @@ export default class DocumentationHeader extends React.PureComponent {
     );
   }
 
-  _renderSectionLinks = hiddenOnMobile => {
+  private renderSectionLinks = hiddenOnMobile => {
     return (
       <div className={`${SECTION_LINKS_WRAPPER} ${hiddenOnMobile && STYLES_HIDDEN_ON_MOBILE}`}>
         <SectionContainer spaceBetween={hiddenOnMobile ? 8 : 0}>
