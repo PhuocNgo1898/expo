@@ -1,6 +1,6 @@
-import styled, { keyframes, css } from 'react-emotion';
-
 import * as React from 'react';
+import { css } from 'react-emotion';
+
 import * as Constants from '~/constants/theme';
 
 const STYLES_DETAILS = css`

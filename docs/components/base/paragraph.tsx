@@ -1,11 +1,11 @@
-import styled, { keyframes, css } from 'react-emotion';
 import emojiRegex from 'emoji-regex';
-
 import * as React from 'react';
-import * as Constants from '~/constants/theme';
-import { Info } from '~/components/icons/Info';
+import { css } from 'react-emotion';
 
 import { paragraph } from './typography';
+
+import { Info } from '~/components/icons/Info';
+import * as Constants from '~/constants/theme';
 
 const attributes = {
   'data-text': true,
@@ -79,19 +79,18 @@ const STYLES_BLOCKQUOTE = css`
   }
 `;
 
-function firstChild(children) {
+function firstChild<T>(children: T | T[]): T {
   if (Array.isArray(children)) {
     return children[0];
   }
-
   return children;
 }
 
-function captureEmoji(children) {
-  let child = firstChild(children);
+function captureEmoji(children: React.ReactChild) {
+  const child = firstChild(children);
 
   if (typeof child === 'string') {
-    const emojiCapture = child.match(emojiRegex);
+    const emojiCapture = child.match(emojiRegex());
 
     if (emojiCapture && emojiCapture.length) {
       return emojiCapture[0];
@@ -99,7 +98,7 @@ function captureEmoji(children) {
   }
 }
 
-function removeEmoji(emoji, children) {
+function removeEmoji(emoji: string, children) {
   const child = firstChild(children) || '';
 
   const modifiedChild = child.replace(emoji, '');
@@ -112,7 +111,7 @@ function removeEmoji(emoji, children) {
 }
 
 export const Quote = ({ children }) => {
-  let icon = (
+  let icon: JSX.Element | string = (
     <div style={{ marginTop: 2 }}>
       <Info size={16} />
     </div>
