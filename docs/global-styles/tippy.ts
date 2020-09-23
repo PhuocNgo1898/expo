@@ -1,5 +1,5 @@
-import * as Constants from '~/constants/theme';
 import { paragraph } from '~/components/base/typography';
+import * as Constants from '~/constants/theme';
 
 export const globalTippy = `
   div.tippy-tooltip {
