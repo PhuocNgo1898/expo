@@ -86,7 +86,7 @@ function firstChild<T>(children: T | T[]): T {
   return children;
 }
 
-function captureEmoji(children: React.ReactChild) {
+function captureEmoji(children: React.ReactNode) {
   const child = firstChild(children);
 
   if (typeof child === 'string') {
@@ -111,7 +111,7 @@ function removeEmoji(emoji: string, children) {
 }
 
 export const Quote = ({ children }) => {
-  let icon: JSX.Element | string = (
+  let icon: React.ReactNode = (
     <div style={{ marginTop: 2 }}>
       <Info size={16} />
     </div>

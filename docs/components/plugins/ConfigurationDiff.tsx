@@ -2,17 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { parseDiff, Diff, Hunk } from 'react-diff-view';
 import { css } from 'react-emotion';
 
-import * as Constants from '~/constants/theme';
-
-const STYLES_BOLD = css`
-  font-family: ${Constants.fonts.demi};
-  font-weight: 400;
-  text-decoration: none;
-  :hover {
-    text-decoration: underline;
-  }
-`;
-
 const TITLE_CONTAINER = css`
   padding: 15px;
   background-color: rgba(246, 246, 246, 0.8);
@@ -45,7 +34,7 @@ export default function ConfigurationDiff({ source }) {
     return null;
   }
 
-  const renderFile = ({ oldRevision, newRevision, type, hunks, oldPath, newPath }) => (
+  const renderFile = ({ oldRevision, newRevision, type, hunks, newPath }) => (
     <div className="diff-container">
       <Title>{newPath}</Title>
       <Diff key={oldRevision + '-' + newRevision} viewType="unified" diffType={type} hunks={hunks}>

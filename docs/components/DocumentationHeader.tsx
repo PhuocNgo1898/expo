@@ -171,7 +171,7 @@ type SectionContainerProps = {
   children: JSX.Element[];
   spaceBetween?: number;
   spaceAround?: number;
-  style?: React.StyleHTMLAttributes<HTMLDivElement>;
+  style?: React.CSSProperties;
   className?: string;
 };
 
@@ -230,11 +230,7 @@ export default class DocumentationHeader extends React.PureComponent<Props> {
           </div>
           <div className={STYLES_RIGHT}>
             {!this.props.isAlgoliaSearchHidden && (
-              <AlgoliaSearch
-                router={this.props.router}
-                version={this.props.version}
-                hiddenOnMobile
-              />
+              <AlgoliaSearch version={this.props.version} hiddenOnMobile />
             )}
 
             {!this.props.isMenuActive && (
@@ -258,7 +254,6 @@ export default class DocumentationHeader extends React.PureComponent<Props> {
         <header className={`${STYLES_NAV} ${STYLES_MOBILE_NAV}`}>
           {this.props.isMobileSearchActive ? (
             <AlgoliaSearch
-              router={this.props.router}
               version={this.props.version}
               hiddenOnMobile={false}
               onToggleSearch={this.props.onToggleSearch}
