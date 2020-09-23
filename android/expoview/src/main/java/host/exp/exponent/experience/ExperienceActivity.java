@@ -740,7 +740,7 @@ public class ExperienceActivity extends BaseExperienceActivity implements Expone
       return;
     }
 
-    RemoteViews remoteViews = new RemoteViews(getPackageName(), mIsShellApp ? R.layout.notification_shell_app : R.layout.notification);
+    RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification);
     remoteViews.setCharSequence(R.id.home_text_button, "setText", name);
 
     // Home
@@ -753,22 +753,6 @@ public class ExperienceActivity extends BaseExperienceActivity implements Expone
     // stack and not in the experience's stack
     remoteViews.setOnClickPendingIntent(R.id.home_text_button, PendingIntent.getService(this, 0,
       ExponentIntentService.getActionInfoScreen(this, mManifestUrl), PendingIntent.FLAG_UPDATE_CURRENT));
-
-    if (!mIsShellApp) {
-      // Share
-      // TODO: add analytics
-      Intent shareIntent = new Intent(Intent.ACTION_SEND);
-      shareIntent.setType("text/plain");
-      shareIntent.putExtra(Intent.EXTRA_SUBJECT, name + " on Exponent");
-      shareIntent.putExtra(Intent.EXTRA_TEXT, mManifestUrl);
-      remoteViews.setOnClickPendingIntent(R.id.share_button, PendingIntent.getActivity(this, 0,
-        Intent.createChooser(shareIntent, "Share a link to " + name), PendingIntent.FLAG_UPDATE_CURRENT));
-
-      // Save
-      remoteViews.setOnClickPendingIntent(R.id.save_button, PendingIntent.getService(this, 0,
-        ExponentIntentService.getActionSaveExperience(this, mManifestUrl),
-        PendingIntent.FLAG_UPDATE_CURRENT));
-    }
 
     // Reload
     remoteViews.setOnClickPendingIntent(R.id.reload_button, PendingIntent.getService(this, 0,
