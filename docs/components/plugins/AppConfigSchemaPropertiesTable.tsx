@@ -2,10 +2,8 @@ import MDX from '@mdx-js/runtime';
 import * as React from 'react';
 import { css } from 'react-emotion';
 
-import { expoColors } from '~/constants/theme';
-
 import * as components from '~/common/translate-markdown';
-import { InlineCode } from '~/components/base/code';
+import { expoColors } from '~/constants/theme';
 
 const STYLES_TABLE = css`
   font-size: 1rem;
@@ -95,7 +93,7 @@ export function createDescription(property) {
   return propertyDescription;
 }
 
-export default class AppConfigSchemaPropertiesTable extends React.Component {
+export default class AppConfigSchemaPropertiesTable extends React.Component<{ schema: object }> {
   render() {
     var rawSchema = Object.entries(this.props.schema);
     var formattedSchema = formatSchema(rawSchema);
