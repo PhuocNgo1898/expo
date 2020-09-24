@@ -1,4 +1,5 @@
 {
+  "name": "expo-development-client-bundle",
   "main": "index.js",
   "scripts": {
     "android": "react-native run-android",
