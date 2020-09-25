@@ -35,6 +35,8 @@ public class LocalAuthenticationModule extends ExportedModule {
   private boolean mIsAuthenticating = false;
   private ModuleRegistry mModuleRegistry;
   private UIManager mUIManager;
+   private BiometricPrompt biometricPrompt;
+   private int countFail = 0;
 
   private static final int AUTHENTICATION_TYPE_FINGERPRINT = 1;
   private static final int AUTHENTICATION_TYPE_FACIAL_RECOGNITION = 2;
@@ -58,6 +60,24 @@ public class LocalAuthenticationModule extends ExportedModule {
               errorResult.putString("error", convertErrorCode(errMsgId));
               errorResult.putString("message", errString.toString());
               safeResolve(errorResult);
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+              super.onAuthenticationFailed();
+              countFail = countFail + 1;
+              mIsAuthenticating = false;
+              
+              if(countFail >= 3){
+               Bundle errorResult = new Bundle();
+
+               errorResult.putBoolean("success", false);
+               errorResult.putString("error", "limit");
+               errorResult.putInt("message", countFail);
+               safeResolve(errorResult);
+               countFail = 0;
+               biometricPrompt.cancelAuthentication();
+              }
             }
           };
 
@@ -179,7 +199,7 @@ public class LocalAuthenticationModule extends ExportedModule {
 
         FragmentActivity fragmentActivity = (FragmentActivity) getCurrentActivity();
         Executor executor = Executors.newSingleThreadExecutor();
-        BiometricPrompt biometricPrompt = new BiometricPrompt(fragmentActivity, executor, mAuthenticationCallback);
+      biometricPrompt = new BiometricPrompt(fragmentActivity, executor, mAuthenticationCallback);
 
         BiometricPrompt.PromptInfo.Builder promptInfoBuilder = new BiometricPrompt.PromptInfo.Builder()
                 .setDeviceCredentialAllowed(!disableDeviceFallback)
